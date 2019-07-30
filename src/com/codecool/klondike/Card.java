@@ -102,10 +102,13 @@ public class Card extends ImageView {
         for (Suits suit : Suits.values()) {
             String suitName = suit.toString();
 
-            for (int rank = 1; rank < 14; rank++) {
-                String cardName = suitName.toLowerCase() + rank;
-                String cardId = suit + Integer.toString(rank);
+            for (Ranks rank : Ranks.values()) {
+                String cardName = suitName.toLowerCase() + rank.Value;
+                String cardId = suit + Integer.toString(rank.Value);
                 String imageFileName = "card_images/" + cardName + ".png";
+                System.out.println(cardName);
+                System.out.println(cardId);
+                System.out.println(imageFileName);
                 cardFaceImages.put(cardId, new Image(imageFileName));
             }
         }
@@ -116,6 +119,28 @@ public class Card extends ImageView {
         DIAMONDS,
         SPADES,
         CLUBS
+    }
+
+    public enum Ranks {
+        ACE(1),
+        TWO(2),
+        THREE(3),
+        FOUR(4),
+        FIVE(5),
+        SIX(6),
+        SEVEN(7),
+        EIGHT(8),
+        NINE(9),
+        TEN(10),
+        JACK(11),
+        QUEEN(12),
+        KING(13);
+
+        public final int Value;
+
+        Ranks(int value) {
+            Value = value;
+        }
     }
 
 }
