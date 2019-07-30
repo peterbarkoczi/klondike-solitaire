@@ -87,14 +87,24 @@ public class Card extends ImageView {
     }
 
     public static List<Card> createNewDeck() {
-        List<Card> result = new ArrayList<>();
+        List<Card> allCards = new ArrayList<>();
         for (Suits suit : Suits.values()) {
             String suitName = suit.toString();
             for (int rank = 1; rank < 14; rank++) {
-                result.add(new Card(suitName, rank, true));
+                allCards.add(new Card(suitName, rank, true));
             }
         }
-        return result;
+
+        List<Card> shuffledDeck = new ArrayList<Card>();
+
+        while (allCards.size() > 0) {
+            Random random = new Random();
+            int randomNumber = random.nextInt(allCards.size());
+            shuffledDeck.add(allCards.get(randomNumber));
+            allCards.remove(randomNumber);
+        }
+
+        return shuffledDeck;
     }
 
     public static void loadCardImages() {
