@@ -23,6 +23,7 @@ public class Game extends Pane {
 
     private Pile stockPile;
     private Pile discardPile;
+
     private List<Pile> foundationPiles = FXCollections.observableArrayList();
     private List<Pile> tableauPiles = FXCollections.observableArrayList();
 
@@ -170,6 +171,7 @@ public class Game extends Pane {
             foundationPiles.add(foundationPile);
             getChildren().add(foundationPile);
         }
+
         for (int i = 0; i < 7; i++) {
             Pile tableauPile = new Pile(Pile.PileType.TABLEAU, "Tableau " + i, TABLEAU_GAP);
             tableauPile.setBlurredBackground();
@@ -182,7 +184,24 @@ public class Game extends Pane {
 
     public void dealCards() {
         Iterator<Card> deckIterator = deck.iterator();
-        //TODO
+
+    int counter = 1;
+
+    for (int j=0; j < tableauPiles.size(); j++) {
+        Pile actualPile = tableauPiles.get(j);
+
+        for (int i=0; i < counter; i++) {
+            Card actualCard = deckIterator.next();
+            addMouseEventHandlers(actualCard);
+            actualPile.addCard(actualCard);
+            getChildren().add(actualCard);
+        }
+
+        counter++;
+        actualPile.getTopCard().flip();
+
+    }
+
         deckIterator.forEachRemaining(card -> {
             stockPile.addCard(card);
             addMouseEventHandlers(card);
