@@ -85,12 +85,14 @@ public class Game extends Pane {
             return;
         Card card = (Card) e.getSource();
         Pile pile = getValidIntersectingPile(card, tableauPiles);
-        //TODO
-        if (pile != null) {
+
+        if (pile != null && !pile.isEmpty() && Card.isOppositeColor(card, pile.getTopCard()) && Card.isNextRank(card, pile.getTopCard())) {
+            handleValidMove(card, pile);
+        } else if (pile != null && card.getRank() == 13) {
             handleValidMove(card, pile);
         } else {
             draggedCards.forEach(MouseUtil::slideBack);
-            draggedCards = null;
+            draggedCards.clear();
         }
     };
 
@@ -121,6 +123,7 @@ public class Game extends Pane {
         //TODO
         return true;
     }
+
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
         Pile result = null;
         for (Pile pile : piles) {

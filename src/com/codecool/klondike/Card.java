@@ -74,12 +74,16 @@ public class Card extends ImageView {
 
     @Override
     public String toString() {
-        return "The " + "Rank" + rank + " of " + "Suit" + suit;
+        return "The " + rank + " of " + suit;
     }
 
     public static boolean isOppositeColor(Card card1, Card card2) {
-        //TODO
-        return true;
+        return  ((card1.getSuit().equals("HEARTS") || card1.getSuit().equals("DIAMONDS")) && (card2.getSuit().equals("SPADES") || card2.getSuit().equals("CLUBS")) ||
+                ((card2.getSuit().equals("HEARTS") || card2.getSuit().equals("DIAMONDS")) && (card1.getSuit().equals("SPADES") || card1.getSuit().equals("CLUBS"))));
+    }
+
+    public static boolean isNextRank(Card card1, Card card2) {
+        return (card1.getRank() == card2.getRank() - 1);
     }
 
     public static boolean isSameSuit(Card card1, Card card2) {
@@ -90,8 +94,8 @@ public class Card extends ImageView {
         List<Card> allCards = new ArrayList<>();
         for (Suits suit : Suits.values()) {
             String suitName = suit.toString();
-            for (int rank = 1; rank < 14; rank++) {
-                allCards.add(new Card(suitName, rank, true));
+            for (Ranks rank : Ranks.values()) {
+                allCards.add(new Card(suitName, rank.Value, true));
             }
         }
 
@@ -103,7 +107,6 @@ public class Card extends ImageView {
             shuffledDeck.add(allCards.get(randomNumber));
             allCards.remove(randomNumber);
         }
-
         return shuffledDeck;
     }
 
@@ -116,9 +119,6 @@ public class Card extends ImageView {
                 String cardName = suitName.toLowerCase() + rank.Value;
                 String cardId = suit + Integer.toString(rank.Value);
                 String imageFileName = "card_images/" + cardName + ".png";
-                System.out.println(cardName);
-                System.out.println(cardId);
-                System.out.println(imageFileName);
                 cardFaceImages.put(cardId, new Image(imageFileName));
             }
         }
