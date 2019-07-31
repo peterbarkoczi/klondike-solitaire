@@ -78,8 +78,12 @@ public class Card extends ImageView {
     }
 
     public static boolean isOppositeColor(Card card1, Card card2) {
-        //TODO
-        return true;
+        return  ((card1.getSuit().equals("HEARTS") || card1.getSuit().equals("DIAMONDS")) && (card2.getSuit().equals("SPADES") || card2.getSuit().equals("CLUBS")) ||
+                ((card2.getSuit().equals("HEARTS") || card2.getSuit().equals("DIAMONDS")) && (card1.getSuit().equals("SPADES") || card1.getSuit().equals("CLUBS"))));
+    }
+
+    public static boolean isNextRank(Card card1, Card card2) {
+        return (card1.getRank() == card2.getRank() - 1);
     }
 
     public static boolean isSameSuit(Card card1, Card card2) {
@@ -90,8 +94,8 @@ public class Card extends ImageView {
         List<Card> allCards = new ArrayList<>();
         for (Suits suit : Suits.values()) {
             String suitName = suit.toString();
-            for (int rank = 1; rank < 14; rank++) {
-                allCards.add(new Card(suitName, rank, true));
+            for (Ranks rank : Ranks.values()) {
+                allCards.add(new Card(suitName, rank.Value, true));
             }
         }
 
@@ -103,7 +107,6 @@ public class Card extends ImageView {
             shuffledDeck.add(allCards.get(randomNumber));
             allCards.remove(randomNumber);
         }
-
         return shuffledDeck;
     }
 
