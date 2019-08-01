@@ -102,6 +102,13 @@ public class Game extends Pane {
             handleValidMove(card, tableauPile);
         } else if (isMoveValid(card, foundationPile)) {
             handleValidMove(card, foundationPile);
+            if (isGameWon(foundationPiles)) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Klondike Solitaire");
+                alert.setHeaderText(null);
+                alert.setContentText("You Won!");
+                alert.showAndWait();
+            }
         } else {
             draggedCards.forEach(MouseUtil::slideBack);
             draggedCards.clear();
@@ -109,9 +116,9 @@ public class Game extends Pane {
     };
 
     public boolean isGameWon(List<Pile> list) {
-        int count = 0;
+        int count = 1;
         for (Pile field: list) {
-            if (field.getTopCard().getRank() == 13) {
+            if (!field.isEmpty() && field.getTopCard().getRank() == 1) {
                 count++;
             }
         }
