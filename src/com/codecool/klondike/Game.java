@@ -168,12 +168,15 @@ public class Game extends Pane {
         if (destPile != null && destPile.getPileType().equals(Pile.PileType.TABLEAU) && !destPile.isEmpty() &&
                 Card.isOppositeColor(card, destPile.getTopCard()) &&
                 Card.isNextRank(card, destPile.getTopCard()) ||
-                (destPile != null && destPile.isEmpty() && card.getRank() == 13)) {
+                (destPile != null &&
+                        destPile.isEmpty() && card.getRank() == 13) &&
+                        destPile.getPileType().equals(Pile.PileType.TABLEAU)) {
             return true;
         } else if (destPile != null && destPile.getPileType().equals(Pile.PileType.FOUNDATION) && !destPile.isEmpty() &&
                 Card.isSameSuit(card, destPile.getTopCard()) &&
                 Card.isNextRankFoundation(card, destPile.getTopCard()) ||
-                (destPile != null && destPile.isEmpty() && card.getRank() == 1)) {
+                (destPile != null && destPile.isEmpty() && card.getRank() == 1) &&
+                        destPile.getPileType().equals(Pile.PileType.FOUNDATION)) {
             return true;
         }
         return false;
