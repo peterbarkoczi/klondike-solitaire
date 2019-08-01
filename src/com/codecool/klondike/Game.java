@@ -118,7 +118,7 @@ public class Game extends Pane {
     public boolean isGameWon(List<Pile> list) {
         int count = 1;
         for (Pile field: list) {
-            if (!field.isEmpty() && field.getTopCard().getRank() == 1) {
+            if (!field.isEmpty() && field.getTopCard().getRank() == 13) {
                 count++;
             }
         }
