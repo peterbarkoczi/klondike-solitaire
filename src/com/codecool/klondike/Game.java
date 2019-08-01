@@ -56,8 +56,8 @@ public class Game extends Pane {
     };
 
     private EventHandler<MouseEvent> onMousePressedHandler = e -> {
-        dragStartX = e.getSceneX();
-        dragStartY = e.getSceneY();
+            dragStartX = e.getSceneX();
+            dragStartY = e.getSceneY();
     };
 
     private EventHandler<MouseEvent> onMouseDraggedHandler = e -> {
@@ -69,15 +69,25 @@ public class Game extends Pane {
         double offsetY = e.getSceneY() - dragStartY;
 
         draggedCards.clear();
-        draggedCards.add(card);
+        if (!card.isFaceDown())
+            draggedCards.add(card);
 
-        card.getDropShadow().setRadius(20);
-        card.getDropShadow().setOffsetX(10);
-        card.getDropShadow().setOffsetY(10);
-
-        card.toFront();
-        card.setTranslateX(offsetX);
-        card.setTranslateY(offsetY);
+        for (Card flippedCard: card.getContainingPile().getCards()) {
+            if (activePile.getPileType() == Pile.PileType.TABLEAU &&
+                    !flippedCard.isFaceDown() &&
+                    (flippedCard.getRank() <= card.getRank())) {
+                draggedCards.add(flippedCard);
+            }
+        }
+        
+        for (Card cardInList : draggedCards) {
+            cardInList.getDropShadow().setRadius(20);
+            cardInList.getDropShadow().setOffsetX(10);
+            cardInList.getDropShadow().setOffsetY(10);
+            cardInList.toFront();
+            cardInList.setTranslateX(offsetX);
+            cardInList.setTranslateY(offsetY);
+        }
     };
 
     private EventHandler<MouseEvent> onMouseReleasedHandler = e -> {
@@ -206,22 +216,22 @@ public class Game extends Pane {
     public void dealCards() {
         Iterator<Card> deckIterator = deck.iterator();
 
-    int counter = 1;
+        int counter = 1;
 
-    for (int j=0; j < tableauPiles.size(); j++) {
-        Pile actualPile = tableauPiles.get(j);
+        for (int j = 0; j < tableauPiles.size(); j++) {
+            Pile actualPile = tableauPiles.get(j);
 
-        for (int i=0; i < counter; i++) {
-            Card actualCard = deckIterator.next();
-            addMouseEventHandlers(actualCard);
-            actualPile.addCard(actualCard);
-            getChildren().add(actualCard);
+            for (int i = 0; i < counter; i++) {
+                Card actualCard = deckIterator.next();
+                addMouseEventHandlers(actualCard);
+                actualPile.addCard(actualCard);
+                getChildren().add(actualCard);
+            }
+
+            counter++;
+            actualPile.getTopCard().flip();
+
         }
-
-        counter++;
-        actualPile.getTopCard().flip();
-
-    }
 
         deckIterator.forEachRemaining(card -> {
             stockPile.addCard(card);

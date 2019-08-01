@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.scene.control.Button;
 
 public class Klondike extends Application {
 
@@ -16,14 +15,12 @@ public class Klondike extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         Card.loadCardImages();
         Game game = new Game();
         game.setTableBackground(new Image("/table/green.png"));
 
-//        Button restartButton = new Button("Restart");
-//        game.getChildren().add(restartButton);
-        primaryStage.setTitle("Klondike Solitaire - Without Jokers");
+        primaryStage.setTitle("Klondike Solitaire");
         primaryStage.setScene(new Scene(game, WINDOW_WIDTH, WINDOW_HEIGHT));
         primaryStage.show();
     }
