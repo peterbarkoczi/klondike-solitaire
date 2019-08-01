@@ -64,13 +64,6 @@ public class Game extends Pane {
         dragStartY = e.getSceneY();
     };
 
-//    First option
-//    private EventHandler<MouseEvent> onButtonPressed = e -> {
-//        System.out.println("Restart button is clicked!");
-//        Klondike game = new Klondike();
-//        game.start(Klondike.stage);
-//    };
-
     private EventHandler<MouseEvent> onMouseDraggedHandler = e -> {
         Card card = (Card) e.getSource();
         Pile activePile = card.getContainingPile();
@@ -205,17 +198,13 @@ public class Game extends Pane {
         resetButton.setTranslateY(20);
         getChildren().add(resetButton);
 
-//        First option
-//        resetButton.setOnMouseClicked(onButtonPressed);
-
-//        Second option
-//        resetButton.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent actionEvent) {
-//                Klondike game = new Klondike();
-//                game.start(Klondike.stage);
-//            }
-//        });
+        resetButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Klondike game = new Klondike();
+                game.start(Klondike.stage);
+            }
+        });
 
 
 

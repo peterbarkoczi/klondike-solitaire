@@ -16,7 +16,7 @@ public class Klondike extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         this.stage = primaryStage;
         Card.loadCardImages();
         Game game = new Game();
