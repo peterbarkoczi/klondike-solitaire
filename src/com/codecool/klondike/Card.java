@@ -113,7 +113,7 @@ public class Card extends ImageView {
     }
 
     public static void loadCardImages() {
-        cardBackImage = new Image("card_images/card_back.png");
+        cardBackImage = new Image("card_images/solitaire-cards-background.png");
         for (Suits suit : Suits.values()) {
             String suitName = suit.toString();
 
