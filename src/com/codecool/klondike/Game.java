@@ -79,7 +79,7 @@ public class Game extends Pane {
                 draggedCards.add(flippedCard);
             }
         }
-        
+
         for (Card cardInList : draggedCards) {
             cardInList.getDropShadow().setRadius(20);
             cardInList.getDropShadow().setOffsetX(10);
@@ -108,8 +108,18 @@ public class Game extends Pane {
         }
     };
 
-    public boolean isGameWon() {
-        //TODO
+    public boolean isGameWon(List<Pile> list) {
+        int count = 0;
+        for (Pile field: list) {
+            if (field.getTopCard().getRank() == 13) {
+                count++;
+            }
+        }
+
+        if (count == 4) {
+            System.out.println("You won!");
+            return true;
+        }
         return false;
     }
 
