@@ -1,7 +1,9 @@
 package com.codecool.klondike;
 
+import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -12,6 +14,8 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -59,6 +63,13 @@ public class Game extends Pane {
         dragStartX = e.getSceneX();
         dragStartY = e.getSceneY();
     };
+
+//    First option
+//    private EventHandler<MouseEvent> onButtonPressed = e -> {
+//        System.out.println("Restart button is clicked!");
+//        Klondike game = new Klondike();
+//        game.start(Klondike.stage);
+//    };
 
     private EventHandler<MouseEvent> onMouseDraggedHandler = e -> {
         Card card = (Card) e.getSource();
@@ -119,7 +130,8 @@ public class Game extends Pane {
     public void refillStockFromDiscard() {
         while (!discardPile.isEmpty()) {
             List<Card> discardedCards = discardPile.getCards();
-            Card actualCard = discardedCards.get(0);
+            int lastCard = discardedCards.size()- 1;
+            Card actualCard = discardedCards.get(lastCard);
             actualCard.flip();
             actualCard.moveToPile(stockPile);
         }
@@ -187,6 +199,25 @@ public class Game extends Pane {
         discardPile.setLayoutX(285);
         discardPile.setLayoutY(20);
         getChildren().add(discardPile);
+
+        Button resetButton = new Button("Restart");
+        resetButton.setTranslateX(10);
+        resetButton.setTranslateY(20);
+        getChildren().add(resetButton);
+
+//        First option
+//        resetButton.setOnMouseClicked(onButtonPressed);
+
+//        Second option
+//        resetButton.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                Klondike game = new Klondike();
+//                game.start(Klondike.stage);
+//            }
+//        });
+
+
 
         for (int i = 0; i < 4; i++) {
             Pile foundationPile = new Pile(Pile.PileType.FOUNDATION, "Foundation " + i, FOUNDATION_GAP);
