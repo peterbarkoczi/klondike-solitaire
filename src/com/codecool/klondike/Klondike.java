@@ -8,8 +8,8 @@ import javafx.scene.control.Button;
 
 public class Klondike extends Application {
 
-    private static final double WINDOW_WIDTH = 800;
-    private static final double WINDOW_HEIGHT = 600;
+    private static final double WINDOW_WIDTH = 1400;
+    private static final double WINDOW_HEIGHT = 800;
 
     public static void main(String[] args) {
         launch(args);
