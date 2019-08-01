@@ -79,7 +79,7 @@ public class Game extends Pane {
                 draggedCards.add(flippedCard);
             }
         }
-        
+
         for (Card cardInList : draggedCards) {
             cardInList.getDropShadow().setRadius(20);
             cardInList.getDropShadow().setOffsetX(10);
@@ -102,14 +102,31 @@ public class Game extends Pane {
             handleValidMove(card, tableauPile);
         } else if (isMoveValid(card, foundationPile)) {
             handleValidMove(card, foundationPile);
+            if (isGameWon(foundationPiles)) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Klondike Solitaire");
+                alert.setHeaderText(null);
+                alert.setContentText("You Won!");
+                alert.showAndWait();
+            }
         } else {
             draggedCards.forEach(MouseUtil::slideBack);
             draggedCards.clear();
         }
     };
 
-    public boolean isGameWon() {
-        //TODO
+    public boolean isGameWon(List<Pile> list) {
+        int count = 1;
+        for (Pile field: list) {
+            if (!field.isEmpty() && field.getTopCard().getRank() == 13) {
+                count++;
+            }
+        }
+
+        if (count == 4) {
+            System.out.println("You won!");
+            return true;
+        }
         return false;
     }
 
