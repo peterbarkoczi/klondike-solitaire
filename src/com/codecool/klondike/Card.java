@@ -9,7 +9,7 @@ import java.util.*;
 
 public class Card extends ImageView {
 
-    private int suit;
+    private String suit;
     private int rank;
     private boolean faceDown;
 
@@ -23,7 +23,7 @@ public class Card extends ImageView {
     public static final int WIDTH = 150;
     public static final int HEIGHT = 215;
 
-    public Card(int suit, int rank, boolean faceDown) {
+    public Card(String suit, int rank, boolean faceDown) {
         this.suit = suit;
         this.rank = rank;
         this.faceDown = faceDown;
@@ -34,7 +34,7 @@ public class Card extends ImageView {
         setEffect(dropShadow);
     }
 
-    public int getSuit() {
+    public String getSuit() {
         return suit;
     }
 
@@ -47,7 +47,7 @@ public class Card extends ImageView {
     }
 
     public String getShortName() {
-        return "S" + suit + "R" + rank;
+        return suit + Integer.toString(rank);
     }
 
     public DropShadow getDropShadow() {
@@ -74,52 +74,84 @@ public class Card extends ImageView {
 
     @Override
     public String toString() {
-        return "The " + "Rank" + rank + " of " + "Suit" + suit;
+        return "The " + rank + " of " + suit;
     }
 
     public static boolean isOppositeColor(Card card1, Card card2) {
-        //TODO
-        return true;
+        return  ((card1.getSuit().equals("HEARTS") || card1.getSuit().equals("DIAMONDS")) && (card2.getSuit().equals("SPADES") || card2.getSuit().equals("CLUBS")) ||
+                ((card2.getSuit().equals("HEARTS") || card2.getSuit().equals("DIAMONDS")) && (card1.getSuit().equals("SPADES") || card1.getSuit().equals("CLUBS"))));
     }
+
+    public static boolean isNextRank(Card card1, Card card2) {
+        return (card1.getRank() == card2.getRank() - 1);
+    }
+
+    public static boolean isNextRankFoundation(Card card1, Card card2) {return (card1.getRank() == card2.getRank() + 1);}
 
     public static boolean isSameSuit(Card card1, Card card2) {
         return card1.getSuit() == card2.getSuit();
     }
 
     public static List<Card> createNewDeck() {
-        List<Card> result = new ArrayList<>();
-        for (int suit = 1; suit < 5; suit++) {
-            for (int rank = 1; rank < 14; rank++) {
-                result.add(new Card(suit, rank, true));
+        List<Card> allCards = new ArrayList<>();
+        for (Suits suit : Suits.values()) {
+            String suitName = suit.toString();
+            for (Ranks rank : Ranks.values()) {
+                allCards.add(new Card(suitName, rank.Value, true));
             }
         }
-        return result;
+
+        List<Card> shuffledDeck = new ArrayList<Card>();
+
+        while (allCards.size() > 0) {
+            Random random = new Random();
+            int randomNumber = random.nextInt(allCards.size());
+            shuffledDeck.add(allCards.get(randomNumber));
+            allCards.remove(randomNumber);
+        }
+        return shuffledDeck;
     }
 
     public static void loadCardImages() {
-        cardBackImage = new Image("card_images/card_back.png");
-        String suitName = "";
-        for (int suit = 1; suit < 5; suit++) {
-            switch (suit) {
-                case 1:
-                    suitName = "hearts";
-                    break;
-                case 2:
-                    suitName = "diamonds";
-                    break;
-                case 3:
-                    suitName = "spades";
-                    break;
-                case 4:
-                    suitName = "clubs";
-                    break;
-            }
-            for (int rank = 1; rank < 14; rank++) {
-                String cardName = suitName + rank;
-                String cardId = "S" + suit + "R" + rank;
+        cardBackImage = new Image("card_images/solitaire-cards-background.png");
+        for (Suits suit : Suits.values()) {
+            String suitName = suit.toString();
+
+            for (Ranks rank : Ranks.values()) {
+                String cardName = suitName.toLowerCase() + rank.Value;
+                String cardId = suit + Integer.toString(rank.Value);
                 String imageFileName = "card_images/" + cardName + ".png";
                 cardFaceImages.put(cardId, new Image(imageFileName));
             }
+        }
+    }
+
+    public enum Suits {
+        HEARTS,
+        DIAMONDS,
+        SPADES,
+        CLUBS
+    }
+
+    public enum Ranks {
+        ACE(1),
+        TWO(2),
+        THREE(3),
+        FOUR(4),
+        FIVE(5),
+        SIX(6),
+        SEVEN(7),
+        EIGHT(8),
+        NINE(9),
+        TEN(10),
+        JACK(11),
+        QUEEN(12),
+        KING(13);
+
+        public final int Value;
+
+        Ranks(int value) {
+            Value = value;
         }
     }
 
