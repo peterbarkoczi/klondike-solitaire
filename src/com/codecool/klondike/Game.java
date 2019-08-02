@@ -55,6 +55,23 @@ public class Game extends Pane {
                     actualContainingPile.getTopCard() == card) {
                 card.flip();
             }
+
+            if (e.getClickCount() == 2 && !e.isConsumed()) {
+                e.consume();
+                for (Pile pile: foundationPiles) {
+                    if (pile != null && !pile.isEmpty() &&
+                            Card.isSameSuit(card, pile.getTopCard()) &&
+                            Card.isNextRankFoundation(card, pile.getTopCard()) ||
+                            (pile != null && pile.isEmpty() && card.getRank() == 1)) {
+                        draggedCards.add(card);
+                        handleValidMove(card, pile);
+                        if (isGameWon(foundationPiles)) {
+                            winPopup();
+                            active = false;
+                        }
+                    }
+                }
+            }
         }
     };
 
@@ -112,11 +129,7 @@ public class Game extends Pane {
         } else if (isMoveValid(card, foundationPile)) {
             handleValidMove(card, foundationPile);
             if (isGameWon(foundationPiles)) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Klondike Solitaire");
-                alert.setHeaderText(null);
-                alert.setContentText("You Won!");
-                alert.showAndWait();
+                winPopup();
                 active = false;
             }
         } else {
@@ -124,6 +137,14 @@ public class Game extends Pane {
             draggedCards.clear();
         }
     };
+
+    private void winPopup() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Klondike Solitaire");
+        alert.setHeaderText(null);
+        alert.setContentText("You Won!");
+        alert.showAndWait();
+    }
 
     public boolean isGameWon(List<Pile> list) {
         int count = 1;
